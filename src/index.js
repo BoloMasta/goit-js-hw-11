@@ -1,17 +1,22 @@
+// impoer Notiflix
 import Notiflix from 'notiflix';
+
+// import SipleLighbox
+import SimpleLightbox from 'simplelightbox';
+// additional styles import
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const gallery = document.querySelector('.gallery');
 const inputTag = document.querySelector('#search-form input');
 
-// cleaning results
-const clearResult = () => {
+// clearing results
+const clearResults = () => {
   gallery.innerHTML = '';
 };
 
 // clear button
 const clearBtn = document.querySelector('#clear-button');
 clearBtn.addEventListener('click', () => {
-  clearResult();
   inputTag.value = '';
   inputTag.focus();
 });
@@ -19,58 +24,70 @@ clearBtn.addEventListener('click', () => {
 // fetch function
 function fetchImages(name) {
   // fetch options
+  let page = 1;
+
   const fetchOptions = new URLSearchParams({
     key: '30479209-dd9929ca676ab60e1d3477c1b',
     q: name,
     image_type: 'photo',
     orientation: 'horizontal',
     safesearch: true,
+    per_page: 40,
+    page: page,
   });
 
   return fetch(`https://pixabay.com/api/?${fetchOptions}`).then(response => {
     if (!response.ok) {
       throw new Error(response.status);
     }
-    console.log(`https://pixabay.com/api/?${fetchOptions}`);
     return response.json();
   });
 }
 
 // rendering results
 function renderImages(images) {
-  clearResult();
-  console.log(images.hits[2].webformatURL);
-
+  clearResults();
   const markup = images
     .map(image => {
       return `<div class="photo-card">
-                <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
+                <a class="gallery__item" href="${image.largeImageURL}">
+                  <img class="gallery__image" src="${image.webformatURL}" alt="${image.tags}" loading="lazy"/>
+                </a>
                 <div class="info">
-                    <p class="info-item">
-                        <b>Likes</b>
-                    </p>
-                    <p class="info-item">
-                        <b>Views</b>
-                    </p>
-                    <p class="info-item">
-                        <b>Comments</b>
-                    </p>
-                    <p class="info-item">
-                        <b>Downloads</b>
-                    </p>
+                  <p class="info-item">
+                    <b>Likes</b><br>
+                    ${image.likes}
+                  </p>
+                  <p class="info-item">
+                    <b>Views</b><br>
+                    ${image.views}
+                  </p>
+                  <p class="info-item">
+                    <b>Comments</b><br>
+                    ${image.comments}
+                  </p>
+                  <p class="info-item">
+                    <b>Downloads</b><br>
+                    ${image.downloads}
+                  </p>
                 </div>
             </div>`;
     })
     .join('');
   gallery.innerHTML = markup;
+
+  // adding simpleLightbox library
+  var lightbox = new SimpleLightbox('.gallery a');
 }
 
-const type = () => {
+const search = () => {
+  event.preventDefault();
   const name = inputTag.value.trim();
+
   if (name.length >= 1) {
     fetchImages(name)
       // rendering results
-      .then(images => renderImages(images))
+      .then(images => renderImages(images.hits))
 
       // no result
       .catch(() =>
@@ -79,11 +96,14 @@ const type = () => {
         )
       );
   } else {
-    clearResult();
+    Notiflix.Notify.failure('Please enter something.');
   }
 };
 
-// debounce
-var debounce = require('lodash.debounce');
-var debounced = debounce(type, 600);
-inputTag.addEventListener('input', debounced);
+// search button
+const searchBtn = document.querySelector('#search-button');
+searchBtn.addEventListener('click', search);
+
+// load-more button
+const loadMoreBtn = document.querySelector('.load-more');
+loadMoreBtn.addEventListener('click', {});

@@ -5,20 +5,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  position: fixed;
+  top: 0;
+  box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.6);
+  z-index: 2;
 }
 
 #search-form input {
-  width: 300px;
+  width: 350px;
   height: 35px;
   padding: 8px;
   outline: none;
+  border-radius: 6px;
 }
 
 #search-form button {
   padding: 0;
   cursor: pointer;
-  opacity: 0.7;
+  border-radius: 6px;
+  opacity: 0.8;
   transition: all 0.3s ease-in-out;
 }
 
@@ -46,4 +51,5 @@
   margin-left: 10px;
   border-radius: 3px;
   background-color: gold;
+  margin-top: 2px;
 }
