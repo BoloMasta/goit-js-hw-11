@@ -21,10 +21,11 @@ clearBtn.addEventListener('click', () => {
   inputTag.focus();
 });
 
+let page = 1;
+
 // fetch function
 function fetchImages(name) {
   // fetch options
-  let page = 1;
 
   const fetchOptions = new URLSearchParams({
     key: '30479209-dd9929ca676ab60e1d3477c1b',
@@ -32,7 +33,7 @@ function fetchImages(name) {
     image_type: 'photo',
     orientation: 'horizontal',
     safesearch: true,
-    per_page: 40,
+    per_page: 5,
     page: page,
   });
 
@@ -74,7 +75,9 @@ function renderImages(images) {
             </div>`;
     })
     .join('');
-  gallery.innerHTML = markup;
+  //gallery.innerHTML += markup;
+  //list.insertAdjacentHTML("beforeend", markup);
+  gallery.insertAdjacentElement('beforeend', markup);
 
   // adding simpleLightbox library
   var lightbox = new SimpleLightbox('.gallery a');
@@ -87,8 +90,13 @@ const search = () => {
   if (name.length >= 1) {
     fetchImages(name)
       // rendering results
-      .then(images => renderImages(images.hits))
-
+      // .then(images =>
+      //   Notiflix.Notify.success(`Hooray! We found ${images.totalHits} images.`)
+      // )
+      .then(images => {
+        Notiflix.Notify.success(`Hooray! We found ${images.totalHits} images.`);
+        renderImages(images.hits);
+      })
       // no result
       .catch(() =>
         Notiflix.Notify.failure(
@@ -106,4 +114,7 @@ searchBtn.addEventListener('click', search);
 
 // load-more button
 const loadMoreBtn = document.querySelector('.load-more');
-loadMoreBtn.addEventListener('click', {});
+loadMoreBtn.addEventListener('click', () => {
+  page = page + 1;
+  search();
+});
