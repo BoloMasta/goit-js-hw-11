@@ -47,7 +47,7 @@ function fetchImages(name) {
 
 // rendering results
 function renderImages(images) {
-  clearResults();
+  // clearResults();
   const markup = images
     .map(image => {
       return `<div class="photo-card">
@@ -75,9 +75,10 @@ function renderImages(images) {
             </div>`;
     })
     .join('');
-  //gallery.innerHTML += markup;
-  //list.insertAdjacentHTML("beforeend", markup);
   gallery.insertAdjacentElement('beforeend', markup);
+  //gallery.innerHTML = markup;
+  //list.insertAdjacentHTML("beforeend", markup);
+  //gallery.insertAdjacentElement('beforeend', markup);
 
   // adding simpleLightbox library
   var lightbox = new SimpleLightbox('.gallery a');
@@ -89,15 +90,10 @@ const search = () => {
 
   if (name.length >= 1) {
     fetchImages(name)
-      // rendering results
-      // .then(images =>
-      //   Notiflix.Notify.success(`Hooray! We found ${images.totalHits} images.`)
-      // )
       .then(images => {
         Notiflix.Notify.success(`Hooray! We found ${images.totalHits} images.`);
         renderImages(images.hits);
       })
-      // no result
       .catch(() =>
         Notiflix.Notify.failure(
           'Sorry, there are no images matching your search query. Please try again.'
