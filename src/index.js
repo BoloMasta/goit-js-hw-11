@@ -8,20 +8,21 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const gallery = document.querySelector('.gallery');
 const inputTag = document.querySelector('#search-form input');
+const clearBtn = document.querySelector('#clear-button');
+const searchBtn = document.querySelector('#search-button');
+const loadMoreBtn = document.querySelector('.load-more');
+
+let page = 1;
 
 // clearing results
 const clearResults = () => {
   gallery.innerHTML = '';
 };
 
-// clear button
-const clearBtn = document.querySelector('#clear-button');
 clearBtn.addEventListener('click', () => {
   inputTag.value = '';
   inputTag.focus();
 });
-
-let page = 1;
 
 // fetch function
 function fetchImages(name) {
@@ -75,17 +76,21 @@ function renderImages(images) {
             </div>`;
     })
     .join('');
-  gallery.insertAdjacentElement('beforeend', markup);
-  //gallery.innerHTML = markup;
+  //gallery.insertAdjacentElement('beforeend', markup);
+  gallery.innerHTML += markup;
   //list.insertAdjacentHTML("beforeend", markup);
   //gallery.insertAdjacentElement('beforeend', markup);
 
   // adding simpleLightbox library
   var lightbox = new SimpleLightbox('.gallery a');
+  loadMoreBtn.style.display = 'block';
 }
 
 const search = () => {
   event.preventDefault();
+  loadMoreBtn.style.display = 'none';
+  gallery.innerHTML = '';
+
   const name = inputTag.value.trim();
 
   if (name.length >= 1) {
@@ -105,11 +110,9 @@ const search = () => {
 };
 
 // search button
-const searchBtn = document.querySelector('#search-button');
 searchBtn.addEventListener('click', search);
 
 // load-more button
-const loadMoreBtn = document.querySelector('.load-more');
 loadMoreBtn.addEventListener('click', () => {
   page = page + 1;
   search();
