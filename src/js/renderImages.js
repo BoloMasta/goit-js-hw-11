@@ -1,5 +1,4 @@
 const gallery = document.querySelector('.gallery');
-const loadMoreBtn = document.querySelector('.load-more');
 
 export function renderImages(images) {
   const markup = images
@@ -33,5 +32,4 @@ export function renderImages(images) {
 
   // add simpleLightbox library
   var lightbox = new SimpleLightbox('.gallery a');
-  loadMoreBtn.style.display = 'block';
 }

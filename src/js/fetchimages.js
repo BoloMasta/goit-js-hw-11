@@ -2,6 +2,8 @@ import Notiflix from 'notiflix';
 
 const axios = require('axios').default;
 
+export let lastIndexPage = 1;
+
 export async function fetchImages(name, page) {
   try {
     const response = await axios.get(`https://pixabay.com/api/`, {
@@ -26,6 +28,14 @@ export async function fetchImages(name, page) {
       Notiflix.Notify.success(
         `Hooray! We found ${response.data.totalHits} images.`
       );
+
+    // lastIndexPage seting
+    if (response.data.totalHits % 40 === 0) {
+      lastIndexPage = response.data.totalHits / 40;
+    } else {
+      lastIndexPage = Math.floor(response.data.totalHits / 40) + 1;
+    }
+
     return response.data;
   } catch (error) {
     console.log(error);

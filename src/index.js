@@ -6,7 +6,7 @@ import SimpleLightbox from 'simplelightbox';
 // additional styles import
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-import { fetchImages } from './js/fetchimages';
+import { fetchImages, lastIndexPage } from './js/fetchimages';
 import { renderImages } from './js/renderImages';
 
 const gallery = document.querySelector('.gallery');
@@ -15,7 +15,7 @@ const clearBtn = document.querySelector('#clear-button');
 const searchBtn = document.querySelector('#search-button');
 const loadMoreBtn = document.querySelector('.load-more');
 
-let page = 1;
+export let page = 1;
 
 const search = () => {
   event.preventDefault();
@@ -26,12 +26,18 @@ const search = () => {
   if (name.length >= 1) {
     fetchImages(name, page)
       .then(images => {
-        // Notiflix.Notify.success(`Hooray! We found ${images.totalHits} images.`);
         renderImages(images.hits);
+        loadMore();
       })
       .catch(error => console.log(error));
   } else {
     Notiflix.Notify.failure('Please enter something.');
+  }
+};
+
+const loadMore = () => {
+  if (page < lastIndexPage) {
+    loadMoreBtn.style.display = 'block';
   }
 };
 
