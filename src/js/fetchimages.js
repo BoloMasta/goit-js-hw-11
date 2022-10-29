@@ -4,6 +4,7 @@ const axios = require('axios').default;
 
 export let lastIndexPage = 1;
 
+// function fetchImages with params
 export async function fetchImages(name, page) {
   try {
     const response = await axios.get(`https://pixabay.com/api/`, {
@@ -18,12 +19,16 @@ export async function fetchImages(name, page) {
         page: page,
       },
     });
+
+    // no results
     if (response.data.totalHits === 0) {
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
       return;
     }
+
+    // show total results on first page
     if (response.data.totalHits > 0 && page === 1)
       Notiflix.Notify.success(
         `Hooray! We found ${response.data.totalHits} images.`

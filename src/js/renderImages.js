@@ -1,5 +1,11 @@
+// import SipleLighbox
+import SimpleLightbox from 'simplelightbox';
+// additional styles import
+import 'simplelightbox/dist/simple-lightbox.min.css';
+
 const gallery = document.querySelector('.gallery');
 
+// render images
 export function renderImages(images) {
   const markup = images
     .map(image => {
