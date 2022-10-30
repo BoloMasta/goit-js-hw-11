@@ -26,10 +26,10 @@
   border-radius: 4px;
   opacity: 0.92;
   transition: all 0.3s ease-in-out;
-}
 
-.gallery__image:hover {
-  opacity: 1;
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .info {
@@ -38,12 +38,12 @@
   align-items: center;
   position: absolute;
   bottom: -20px;
-}
 
-.info-item {
-  margin: 0 17px;
-  font-size: 15px;
-  text-align: center;
+  &-item {
+    margin: 0 17px;
+    font-size: 15px;
+    text-align: center;
+  }
 }
 
 .load-more {
@@ -57,8 +57,8 @@
   opacity: 0.85;
   transition: all 0.3s ease-in-out;
   display: none;
-}
 
-.load-more:hover {
-  opacity: 1;
+  &:hover {
+    opacity: 1;
+  }
 }
